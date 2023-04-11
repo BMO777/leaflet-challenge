@@ -16,13 +16,40 @@ d3.json(queryUrl).then((data) => {
 createFeatures = (earthquakeData) => {
 
   function onEachFeature(feature, layer)  {
-    layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
+
+    layer.bindPopup(`<h3>${feature.properties.place} </br>Magnitude: ${feature.properties.mag} </br>Depth(km):${feature.geometry.coordinates[2]}</h3>\
+    <hr><p>${new Date(feature.properties.time)}</p>`);
   }
   // Create a GeoJSON layer that contains the features array on the earthquakeData object.
   // Run the onEachFeature function once for each piece of data in the array.
   let earthquakes = L.geoJSON(earthquakeData, {
-    onEachFeature: onEachFeature
-  });
+    onEachFeature: onEachFeature,
+    pointToLayer: (feature, latlng) => {
+      return L.circle(latlng, {
+        color : "#F60D1D",
+        fillColor : "#F60D1D",
+        radius : Math.sqrt(10**(feature.properties.mag)) * 200,
+        fillOpacity: 0.5, 
+        color: "black",
+        stroke: true,
+        weight: 0.5
+        
+      })  }
+  //   pointToLayer: (feature, latlng) => {
+
+  //     // Determine the style of markers based on properties
+  // let markers = {
+  //       radius: 20,
+  //       fillColor: "#F60D1D",
+  //       fillOpacity: 0.7,
+  //       color: "black",
+  //       stroke: true,
+  //       weight: 0.5
+  //     }
+  //     return L.circle(latlng,markers);
+  //   }
+  
+    });
 // 3.
   // Send our earthquakes layer to the createMap function/
   createMap(earthquakes);
@@ -70,7 +97,8 @@ let CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
 
   // Create an overlays object.
   let overlayMaps = {
-    Earthquakes: earthquakes
+    Earthquakes: earthquakes,
+
   };
 
   // Create a new map.
@@ -83,7 +111,7 @@ let CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
     layers: [CartoDB_DarkMatter, earthquakes]
   });
 
-
+bonus(myMap, baseMaps)
 
 
   // Create a layer control that contains our baseMaps.
