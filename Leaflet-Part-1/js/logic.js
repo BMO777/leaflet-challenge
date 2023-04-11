@@ -77,10 +77,10 @@ let CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
   // Edit the code to add the earthquake data to the layers.
   let myMap = L.map("map", {
     center: [
-      37.09, -95.71
+      33, -100
     ],
     zoom: 5,
-    // layers: [street, earthquakes]
+    layers: [CartoDB_DarkMatter, earthquakes]
   });
 
 
