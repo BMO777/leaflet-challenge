@@ -4,7 +4,7 @@ let queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
 
 // Perform a GET request to the query URL.
 d3.json(queryUrl).then((data) => {
-  console.log(data.features);
+  // console.log(data.features);
   // Using the features array sent back in the API data, create a GeoJSON layer, and add it to the map.
 
   // 1.
@@ -12,6 +12,20 @@ d3.json(queryUrl).then((data) => {
   createFeatures(data.features);
 
 });
+let rainbow = new Rainbow();
+rainbow.setSpectrum('green', 'red');
+rainbow.setNumberRange(0, 7);
+
+
+colorset = (ed) =>{
+   
+  return ed > 70 ? '#' + rainbow.colourAt(6) :
+  ed > 60 ? '#' + rainbow.colourAt(5) :
+ed > 50 ? '#' + rainbow.colourAt(4) :
+ed > 40 ? '#' + rainbow.colourAt(3) :
+ed > 30 ? '#' + rainbow.colourAt(2) :
+ed > 0 ? '#' + rainbow.colourAt(1) :
+ed <= 0 ? '#' + rainbow.colourAt(0) : '#' + rainbow.colourAt(7)};
 // 2.
 createFeatures = (earthquakeData) => {
 
@@ -19,15 +33,20 @@ createFeatures = (earthquakeData) => {
 
     layer.bindPopup(`<h3>${feature.properties.place} </br>Magnitude: ${feature.properties.mag} </br>Depth(km):${feature.geometry.coordinates[2]}</h3>\
     <hr><p>${new Date(feature.properties.time)}</p>`);
+    
   }
+
+
+
+
   // Create a GeoJSON layer that contains the features array on the earthquakeData object.
   // Run the onEachFeature function once for each piece of data in the array.
   let earthquakes = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature,
     pointToLayer: (feature, latlng) => {
+      // console.log('rainbow: ',  colorset(feature.geometry.coordinates[2]));
       return L.circle(latlng, {
-        color : "#F60D1D",
-        fillColor : "#F60D1D",
+        fillColor : colorset(feature.geometry.coordinates[2]),
         radius : Math.sqrt(10**(feature.properties.mag)) * 200,
         fillOpacity: 0.5, 
         color: "black",
@@ -35,19 +54,7 @@ createFeatures = (earthquakeData) => {
         weight: 0.5
         
       })  }
-  //   pointToLayer: (feature, latlng) => {
 
-  //     // Determine the style of markers based on properties
-  // let markers = {
-  //       radius: 20,
-  //       fillColor: "#F60D1D",
-  //       fillOpacity: 0.7,
-  //       color: "black",
-  //       stroke: true,
-  //       weight: 0.5
-  //     }
-  //     return L.circle(latlng,markers);
-  //   }
   
     });
 // 3.
@@ -111,14 +118,28 @@ let CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
     layers: [CartoDB_DarkMatter, earthquakes]
   });
 
-bonus(myMap, baseMaps)
 
+  let legend = L.control({position: "bottomright"});
+  legend.onAdd = () => {
+    let div = L.DomUtil.create("div", "legend");
+    let depth = [0, 10, 30, 50, 70, 90];
+    div.innerHTML += "<h4 style='text-align: center'></h4>"
+  
+    for (let i in  depth) {
+      div.innerHTML += ('');
+
+      }
+    return div;
+  };
+  legend.addTo(myMap);
 
   // Create a layer control that contains our baseMaps.
   // Be sure to add an overlay Layer that contains the earthquake GeoJSON.
-  L.control.layers(baseMaps, overlayMaps,{
+let control = L.control.layers(baseMaps, overlayMaps,{
     collapsed: false
   }).addTo(myMap);
+bonus(control);//reference to tectonic plate bonus overlay
 
 
 }
+
