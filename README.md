@@ -4,7 +4,7 @@
 In this repository the d3 api is used to load data from USGS in refrence to earthqakes.
 The leaflet library is then referenced and used to load basemaps on which can be added layers with data such as circles referencing earthquake location such as is used here.
 
-Overlays can be added on, referencing tectonic plates accruing with other layers and can be selected and deselcted when layer controls are added to the map.
+Overlays can be added on, referencing tectonic plates such as is used here or more accruing with other layers and can be selected and deselcted when layer controls are added to the map.
 
 Github pages: https://bmo777.github.io/leaflet-challenge/
 
