@@ -12,11 +12,12 @@ d3.json(queryUrl).then((data) => {
   createFeatures(data.features);
 
 });
+//imports from RaimbowVisJS library to set spectrum of gradient
 let rainbow = new Rainbow();
 rainbow.setSpectrum('green', 'red');
 rainbow.setNumberRange(0, 6);
 
-
+//function that outputs gradient and hashtag according to number supplied
 colorset = (ed) =>{
    
   return ed > 90 ? '#' + rainbow.colourAt(6) :
@@ -77,8 +78,6 @@ let CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
     zoom: 5,
     layers: [CartoDB_DarkMatter, earthquakes]
   });
-
-
 
 
 let legend = L.control({position: "bottomright"});
