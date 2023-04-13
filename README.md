@@ -6,7 +6,7 @@ The leaflet library is then referenced and used to load basemaps on which can be
 
 Overlays can be added on, referencing tectonic plates accruing with other layers and can be selected and deselcted when layer controls are added to the map.
 
-Github pages: https://BMO777.github.io/leaflet-challenge/
+Github pages: https://bmo777.github.io/leaflet-challenge/
 
 References:
 Leaflet library: https://github.com/Leaflet/Leaflet
