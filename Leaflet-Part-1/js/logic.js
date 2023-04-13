@@ -14,18 +14,18 @@ d3.json(queryUrl).then((data) => {
 });
 let rainbow = new Rainbow();
 rainbow.setSpectrum('green', 'red');
-rainbow.setNumberRange(0, 7);
+rainbow.setNumberRange(0, 6);
 
 
 colorset = (ed) =>{
    
-  return ed > 70 ? '#' + rainbow.colourAt(6) :
-  ed > 60 ? '#' + rainbow.colourAt(5) :
+  return ed > 90 ? '#' + rainbow.colourAt(6) :
+ed > 70 ? '#' + rainbow.colourAt(5) :
 ed > 50 ? '#' + rainbow.colourAt(4) :
-ed > 40 ? '#' + rainbow.colourAt(3) :
-ed > 30 ? '#' + rainbow.colourAt(2) :
+ed > 30 ? '#' + rainbow.colourAt(3) :
+ed > 10 ? '#' + rainbow.colourAt(2) :
 ed > 0 ? '#' + rainbow.colourAt(1) :
-ed <= 0 ? '#' + rainbow.colourAt(0) : '#' + rainbow.colourAt(7)};
+ed <= 0 ? '#' + rainbow.colourAt(0) : '#' + rainbow.colourAt(0)};
 // 2.
 createFeatures = (earthquakeData) => {
 
@@ -36,18 +36,15 @@ createFeatures = (earthquakeData) => {
     
   }
 
-
-
-
   // Create a GeoJSON layer that contains the features array on the earthquakeData object.
   // Run the onEachFeature function once for each piece of data in the array.
   let earthquakes = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature,
     pointToLayer: (feature, latlng) => {
-      // console.log('rainbow: ',  colorset(feature.geometry.coordinates[2]));
+      // create citcle markers and fill color by depth from third coordinate and radius influenced by magnitude 
       return L.circle(latlng, {
         fillColor : colorset(feature.geometry.coordinates[2]),
-        radius : Math.sqrt(10**(feature.properties.mag)) * 200,
+        radius : Math.sqrt(10**(feature.properties.mag)) * 300,
         fillOpacity: 0.5, 
         color: "black",
         stroke: true,
@@ -63,50 +60,13 @@ createFeatures = (earthquakeData) => {
 }// createMap() takes the earthquake data and incorporates it into the visualization:
 
 createMap = (earthquakes) => {
-  // Create the base layers.
-  let openstreet = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  })
+  // Create the base layer.
 
-  let opentopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-  });
-
-  let USGS_USImageryTopo = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}', {
-	maxZoom: 20,
-	attribution: 'Tiles courtesy of the <a href="https://usgs.gov/">U.S. Geological Survey</a>'
-});
-
-let Stamen_Terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
-	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	subdomains: 'abcd',
-	minZoom: 0,
-	maxZoom: 18,
-	ext: 'png'
-});
 let CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 	subdomains: 'abcd',
 	maxZoom: 20
 });
-
-  //add 2012NASA night map using leaflet provider extension call
-  let NASA2012night = L.tileLayer.provider('NASAGIBS.ViirsEarthAtNight2012')
-  // Create a baseMaps object.
-  let baseMaps = {
-    "Street Map": openstreet,
-    "Topographic Map": opentopo,
-    "USGS_USImagery Map": USGS_USImageryTopo,
-    "Stamen_Terrain": Stamen_Terrain,
-    "CartoDB_DarkMatter": CartoDB_DarkMatter,
-    "NASA2012night": NASA2012night
-  };
-
-  // Create an overlays object.
-  let overlayMaps = {
-    Earthquakes: earthquakes,
-
-  };
 
   // Create a new map.
   // Edit the code to add the earthquake data to the layers.
@@ -119,27 +79,23 @@ let CartoDB_DarkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all
   });
 
 
-  let legend = L.control({position: "bottomright"});
-  legend.onAdd = () => {
-    let div = L.DomUtil.create("div", "legend");
-    let depth = [0, 10, 30, 50, 70, 90];
-    div.innerHTML += "<h4 style='text-align: center'></h4>"
-  
-    for (let i in  depth) {
-      div.innerHTML += ('');
 
-      }
-    return div;
-  };
-  legend.addTo(myMap);
 
-  // Create a layer control that contains our baseMaps.
-  // Be sure to add an overlay Layer that contains the earthquake GeoJSON.
-let control = L.control.layers(baseMaps, overlayMaps,{
-    collapsed: false
-  }).addTo(myMap);
-bonus(control);//reference to tectonic plate bonus overlay
+let legend = L.control({position: "bottomright"});
+legend.onAdd = () => {
+  let div = L.DomUtil.create("div", "legend");
+  let depth = [-10, 10, 30, 50, 70, 90];
 
+  div.innerHTML += "<h4>Depth(km)</h4>"//reference legend h4 in css file
+
+  for (let i in  depth) {//set background based on depth and if no number next to depth in array add + after last element
+    div.innerHTML += `<i style='background: ${colorset(depth[i])}'></i><span>${depth[i]}${depth[+(i)+1] == undefined ? '+' :-depth[+(i)+1]} </span><br>`;
+}
+return div;
+    }
+legend.addTo(myMap);
+
+bonus(earthquakes, CartoDB_DarkMatter, myMap);//reference to tectonic plate bonus overlay
 
 }
 
