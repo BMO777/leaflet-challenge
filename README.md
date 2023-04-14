@@ -1,7 +1,7 @@
 # Leaflet Challenge
 
 ![1-Logo](https://earthquake.usgs.gov/theme/images/usgs-logo.svg)
-In this repository the d3 api is used to load data from USGS in refrence to earthqakes.
+In this repository the d3 library is used to load data connected with a geojson API from USGS in refrence to earthqakes.
 The leaflet library is then referenced and used to load basemaps on which can be added layers with data such as circles referencing earthquake location such as is used here.
 
 Overlays can be added on, referencing tectonic plates such as is used here or more accruing with other layers and can be selected and deselcted when layer controls are added to the map.
