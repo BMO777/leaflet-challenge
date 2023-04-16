@@ -10,5 +10,7 @@ Github pages: https://bmo777.github.io/leaflet-challenge/
 
 References:
 Leaflet library: https://github.com/Leaflet/Leaflet
+
 For color gradient, imported RaimbowVisJS library from https://github.com/anomal/RainbowVis-JS
+
 In style.css used code from: https://codepen.io/haakseth/pen/KQbjdO 
