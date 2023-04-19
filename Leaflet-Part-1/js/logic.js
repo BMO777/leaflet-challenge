@@ -19,7 +19,7 @@ rainbow.setNumberRange(0, 6);
 
 //function that outputs gradient and hashtag according to number supplied
 colorset = (ed) =>{
-   
+  //if else javascript shorthand
   return ed > 90 ? '#' + rainbow.colourAt(6) :
 ed > 70 ? '#' + rainbow.colourAt(5) :
 ed > 50 ? '#' + rainbow.colourAt(4) :
@@ -88,7 +88,7 @@ legend.onAdd = () => {
   div.innerHTML += "<h4>Depth(km)</h4>"//reference legend h4 in css file
 
   for (let i in  depth) {//set background based on depth and if no number next to depth in array add + after last element
-    div.innerHTML += `<i style='background: ${colorset(depth[i])}'></i><span>${depth[i]}${depth[+(i)+1] == undefined ? '+' :-depth[+(i)+1]} </span><br>`;
+    div.innerHTML += `<i style='background: ${colorset(depth[i])}'></i><span>${depth[i]}${depth[+(i)+1] ? -depth[+(i)+1] :'+'} </span><br>`;
 }
 return div;
     }

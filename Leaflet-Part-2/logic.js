@@ -1,10 +1,10 @@
 // Store our API endpoint as queryUrl.
-let pUrl = "https://rawcdn.githack.com/fraxen/tectonicplates/339b0c56563c118307b1f4542703047f5f698fae/GeoJSON/PB2002_plates.json";
+let pUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json";
 
 
 // Perform a GET request to the query URL.
 bonus = (earthquakes, CartoDB_DarkMatter, myMap) => d3.json(pUrl).then((data) => {
-    // console.log('data: ', data);
+     console.log('data: ', data);
 
 
 tectonic = L.geoJson(data.features, {
@@ -52,7 +52,8 @@ tectonic = L.geoJson(data.features, {
     "USGS_USImagery Map": USGS_USImageryTopo,
     "Stamen_Terrain": Stamen_Terrain,
     "CartoDB_DarkMatter": CartoDB_DarkMatter,
-    "NASA2012night": NASA2012night
+    "NASA2012night": NASA2012night,
+"Esri" : L.tileLayer.provider('Esri.WorldImagery')
   };
 
   // Create an overlays object.
