@@ -33,7 +33,7 @@ createFeatures = (earthquakeData) => {
   function onEachFeature(feature, layer)  {
 
     layer.bindPopup(`<h3>${feature.properties.place} </br>Magnitude: ${feature.properties.mag} </br>Depth(km):${feature.geometry.coordinates[2]}</h3>\
-    <hr><p>${new Date(feature.properties.time)}</p>`);
+    <hr><p>${new Date(feature.properties.time)} </br><a href='${feature.properties.url}'>USGS Website on this earthquake</a></p>`);
     
   }
 
