@@ -36,7 +36,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
+          # Folder with index file
           path: './Leaflet-Part-1'
       - name: Deploy to GitHub Pages
         id: deployment
