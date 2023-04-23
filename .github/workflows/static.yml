@@ -22,6 +22,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: hakierspejs/jekyll-screenshot-github-action@master
+    - uses: actions/upload-artifact@v1
+      with:
+       name: screenshot
+       path: /home/runner/work/_temp/_github_home/screenshot.png
   # Single deploy job since we're just deploying
   deploy:
     environment:
@@ -41,12 +50,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - uses: hakierspejs/jekyll-screenshot-github-action@master
-    - uses: actions/upload-artifact@v1
-      with:
-       name: screenshot
-       path: /home/runner/work/_temp/_github_home/screenshot.png
+  
