@@ -4,7 +4,7 @@ let pUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJS
 
 // Perform a GET request to the query URL.
 bonus = (earthquakes, CartoDB_DarkMatter, myMap) => d3.json(pUrl).then((data) => {
-     console.log('data: ', data);
+     //console.log('data: ', data);
 
 
 tectonic = L.geoJson(data.features, {
